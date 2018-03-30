@@ -38,10 +38,11 @@ interface ToolbarManager{
         toolbar.navigationIcon = createUpDrawable()
         toolbar.setNavigationOnClickListener{ up() }
     }
-    private fun createUpDrawable() = with(DrawerArrowDrawable(toolbar.ctx)){
-        progress = 1f
-        this
-    }
+    private fun createUpDrawable() =
+            DrawerArrowDrawable(toolbar.ctx).apply { progress = 1f }
+
+
+
     fun attachToScroll(recyclerView: RecyclerView){
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
