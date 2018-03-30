@@ -8,6 +8,7 @@ import com.lghdb.kotlin.extensions.ctx
 import com.lghdb.kotlin.extensions.slideEnter
 import com.lghdb.kotlin.extensions.slideExit
 import com.lghdb.kotlin.ui.App
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
 /**
@@ -27,7 +28,7 @@ interface ToolbarManager{
         toolbar.inflateMenu(R.menu.menu_main)
         toolbar.setOnMenuItemClickListener {
             when(it.itemId){
-                R.id.action_settings -> App.instance.toast("设置")
+                R.id.action_settings -> toolbar.ctx.startActivity<SettingsActivity>()
                 else -> App.instance.toast("其他操作")
             }
             true

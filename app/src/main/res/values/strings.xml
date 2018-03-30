@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">天气预报</string>
     <string name="settings">设置</string>
+    <string name="city_zipcode">城市</string>
 </resources>
