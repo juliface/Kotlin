@@ -151,13 +151,13 @@ class PicLocationActivity: Activity(){
         //显示定位按钮
         map!!.uiSettings.setMyLocationButtonEnabled(true)
         //显示定位蓝点
-        map!!.setMyLocationEnabled(true)
+        map!!.isMyLocationEnabled = true
         map!!.moveCamera(CameraUpdateFactory.zoomTo(15f))
-        var sytle = MyLocationStyle()
+        //设置蓝点的style
+        map!!.myLocationStyle = MyLocationStyle()
                 .myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE)//定位一次，且将视角移动到地图中心点。
                 .strokeColor(Color.TRANSPARENT)
                 .radiusFillColor(Color.TRANSPARENT)
-        map!!.setMyLocationStyle(sytle)
         //从定位中获取地址信息
         map!!.setOnMyLocationChangeListener {
             currentViewHoldier = ViewHoldier("[位置]",
