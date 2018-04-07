@@ -152,7 +152,7 @@ class PicLocationActivity: Activity(){
         map_view?.onCreate(savedInstanceState)
         map = map_view!!.map
         //显示定位按钮
-        map!!.uiSettings.setMyLocationButtonEnabled(true)
+        map!!.uiSettings.isMyLocationButtonEnabled = true
         //显示定位蓝点
         map!!.isMyLocationEnabled = true
         map!!.moveCamera(CameraUpdateFactory.zoomTo(15f))
