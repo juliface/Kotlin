@@ -10,13 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="拥堵较少"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:gravity="center"
         android:textColor="#44000000"
         android:background="#ccaaaaaa"
         android:paddingLeft="@dimen/dp3"
         android:paddingRight="@dimen/dp3"/>
-
     <TextView
         android:id="@+id/ll_tv_time"
         android:layout_width="match_parent"

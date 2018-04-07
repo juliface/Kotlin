@@ -10,6 +10,8 @@
     <color name="alpha_black">#49000000</color>
     <color name="gray">#ddd</color>
 
+    <color name="item_text_title_color">#cccccc</color>
+    <color name="item_text_title_bg">#F6F6F6</color>
 
 
     <color name="gray_white">#44cccccc</color>

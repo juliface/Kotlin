@@ -2,8 +2,8 @@
     <dimen name="dp3">3dp</dimen>
     <dimen name="dp5">5dp</dimen>
 
-    <dimen name="poi_title_size">14sp</dimen>
-    <dimen name="poi_field_size">14sp</dimen>
+    <dimen name="poi_title_size">16sp</dimen>
+    <dimen name="poi_field_size">16sp</dimen>
     <dimen name="margin_left">15dp</dimen>
     <dimen name="margin_right">15dp</dimen>
 </resources>

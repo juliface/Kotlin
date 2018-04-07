@@ -2,9 +2,11 @@ package com.lghdb.driver.ui.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.amap.api.location.AMapLocationClient
 import com.amap.api.location.AMapLocationClientOption
 import com.lghdb.driver.R
+import com.lghdb.driver.extensions.sha1
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.startActivity
 
@@ -19,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         actionBar?.hide()
         initLocation()
+        Log.v("sha1","当前: ${this.sha1()}")
         start.setOnClickListener{ startActivity<DriverLineActivity>(
                 DriverLineActivity.START_SITE to startlng.text.toString(),
                 DriverLineActivity.END_SITE to endlng.text.toString())

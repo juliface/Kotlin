@@ -11,3 +11,16 @@ fun <T> MutableList<T>.removeButFirst(){
         this.add(0, t)
     }
 }
+
+fun <K,V> MutableMap<K,V>.each(f:(K,V) -> Unit){
+    for ((k,v) in this) f(k,v)
+}
+
+fun <K,V> MutableMap<K,V>.keyAt(index:Int): K?{
+    var i = 0
+    for((k,v) in this){
+        if (i == index) return k
+        i ++
+    }
+    return null
+}

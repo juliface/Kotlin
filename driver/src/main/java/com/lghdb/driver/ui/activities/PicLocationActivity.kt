@@ -78,6 +78,9 @@ class PicLocationActivity: Activity(){
             setResult(PoiSearchActivity.POI_LOCATION_MAP, intent)
             finish()
         }
+
+        //左上角的返回按钮
+        back_search_location.setOnClickListener{cancle();finish()}
     }
     /**
      * marker点击时跳动一下
@@ -237,6 +240,16 @@ class PicLocationActivity: Activity(){
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         map_view?.onSaveInstanceState(outState)
+    }
+
+    override fun onBackPressed() {
+        cancle()
+        super.onBackPressed()
+    }
+
+    private fun cancle(){
+        val intent = Intent()
+        setResult(DriverLineActivity.REQUEST_CODE_POI_SEARCH_EXIT, intent)
     }
 
     /**

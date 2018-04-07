@@ -45,11 +45,22 @@
         <!-- 设置key -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="40cc4d3e974780ab69f2e6b694fca3c0"/>
+            android:value="b888619a3198aadcdd57a823dacec677"/>
 
         <service android:name="com.amap.api.location.APSService" />
 
+        <!--
         <activity android:name="com.lghdb.driver.ui.activities.MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        -->
+
+        <activity android:name="com.lghdb.driver.ui.activities.DriverLineActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,8 +71,7 @@
 
         <activity android:name="com.lghdb.driver.ui.activities.AMapNaviActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name="com.lghdb.driver.ui.activities.DriverLineActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
         <activity android:name="com.lghdb.driver.ui.activities.PoiSearchActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name="com.lghdb.driver.ui.activities.PicLocationActivity"

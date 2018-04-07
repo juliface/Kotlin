@@ -10,6 +10,7 @@
         android:padding="5dp"
         android:background="@color/gray">
         <ImageView
+            android:id="@+id/back_search_location"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@mipmap/back"

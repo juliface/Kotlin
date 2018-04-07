@@ -47,6 +47,9 @@ class PoiSearchActivity: AppCompatActivity(){
             var intent = Intent(this@PoiSearchActivity,PicLocationActivity::class.java)
             startActivityForResult(intent, POI_LOCATION_MAP)
         }
+
+        //左上角的返回按钮
+        back_line.setOnClickListener{ cancle(); finish() }
     }
 
     /**
@@ -59,6 +62,16 @@ class PoiSearchActivity: AppCompatActivity(){
             setResult(DriverLineActivity.REQUEST_CODE_POI_SEARCH, intent)
             finish()
         }
+    }
+
+    override fun onBackPressed() {
+        cancle()
+        super.onBackPressed()
+    }
+
+    private fun cancle(){
+        val intent = Intent()
+        setResult(DriverLineActivity.REQUEST_CODE_POI_SEARCH_EXIT, intent)
     }
 
     /**
