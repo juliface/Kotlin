@@ -141,6 +141,8 @@ class Map(val mapView: MapView,val savedInstanceState: Bundle?){
         }.addToMap()
     }
 
+    //**************************************************************
+    //**********关于地图的声明周期************************************
     fun onDestroy(){
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         mapView.onDestroy()

@@ -281,7 +281,7 @@ class DriverLineActivity: MapBaseActivity(){
     }
 
     /**
-     * 当路线
+     * 单路线
      */
     private fun oneRoute(){
         val path = mapNavi!!.naviPath

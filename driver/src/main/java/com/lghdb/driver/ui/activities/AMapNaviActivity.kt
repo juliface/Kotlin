@@ -3,7 +3,6 @@ package com.lghdb.driver.ui.activities
 import android.content.res.Resources
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.amap.api.navi.*
 import com.amap.api.navi.enums.NaviType
 import com.lghdb.driver.R
@@ -46,12 +45,7 @@ class AMapNaviActivity: AppCompatActivity(),DriverNaviListener, DriverAMapNaviVi
 
     override fun onCalculateRouteFailure(errorInfo: Int) {
         super.onCalculateRouteFailure(errorInfo)
-        Log.v("dm", "--------------------------------------------")
-        Log.v("dm", "路线计算失败：错误码=" + errorInfo)
-        Log.v("dm", "错误码详细链接见：http://lbs.amap.com/api/android-navi-sdk/guide/tools/errorcode/");
-        Log.v("dm", "--------------------------------------------")
     }
-
 
 
     private fun startNavi(){
