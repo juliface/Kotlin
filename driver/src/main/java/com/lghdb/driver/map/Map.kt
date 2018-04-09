@@ -12,6 +12,7 @@ import com.amap.api.maps.CameraUpdateFactory
 import com.amap.api.maps.MapView
 import com.amap.api.maps.model.*
 import com.amap.api.navi.model.AMapNaviPath
+import com.amap.api.navi.model.NaviLatLng
 import com.amap.api.navi.view.RouteOverLay
 import com.lghdb.driver.R
 import com.lghdb.driver.extensions.ctx
@@ -23,6 +24,7 @@ import com.lghdb.driver.ui.App
 
 class Map(val mapView: MapView,val savedInstanceState: Bundle?){
     private var map:AMap
+
     /**
      * 时候开启小蓝点
      */
@@ -49,6 +51,8 @@ class Map(val mapView: MapView,val savedInstanceState: Bundle?){
         map = mapView.map
     }
 
+
+
     /**
      * 通过如下回调方法获取经纬度信息
      * 从location对象中获取经纬度信息，地址描述信息，建议拿到位置之后调用逆地理编码接口获取
@@ -58,6 +62,9 @@ class Map(val mapView: MapView,val savedInstanceState: Bundle?){
         return this
     }
 
+    /**
+     * 显示默认的定位蓝点
+     */
     fun myLocationEnabled():Map{
         isMyLocationEnabled = true
         myLocationStyle = MyLocationStyle()
@@ -65,6 +72,14 @@ class Map(val mapView: MapView,val savedInstanceState: Bundle?){
                 .strokeColor(Color.TRANSPARENT)
                 .radiusFillColor(Color.TRANSPARENT)
         return this
+    }
+
+    /**
+     * 初始化默认的配置，默认配置为：显示定位按钮，显示定位蓝点，地图缩放到15级别
+     */
+    fun initDefaultConf():Map{
+        isMyLocationButtonEnabled = true
+        return myLocationEnabled().zoomTo(15f)
     }
 
     //***********************************************************
@@ -79,12 +94,18 @@ class Map(val mapView: MapView,val savedInstanceState: Bundle?){
 
     /**
      * 设置缩放级别
+     * @param tt 缩放的级别
      */
     fun zoomTo(tt:Float):Map{
         moveCamera(CameraUpdateFactory.zoomTo(tt))
         return this
     }
-    //地图移动的回调监听器
+
+    /**
+     * 地图移动的回调监听器
+     * @param cameraChange 移动的过程中回调的函数
+     * @param cameraChangeFinish 移动结束后回调的函数
+     */
     fun setOnCameraChangeListener(cameraChange:(CameraPosition)->Unit = {},
                                   cameraChangeFinish:(CameraPosition)->Unit={}){
         map.setOnCameraChangeListener(object :AMap.OnCameraChangeListener{
@@ -104,17 +125,34 @@ class Map(val mapView: MapView,val savedInstanceState: Bundle?){
     fun addMarker(marker:MarkerOptions):Marker{
         return map.addMarker(marker)
     }
+
+    /**
+     * 在指定的地点添加一个标记
+     * @param position 必填，添加标记的位置
+     * @param draggable 是否可以拖动，默认为false
+     * @param mipmapId 标记的图标
+     */
     fun addMarker(position:LatLng,
-                  draggable:Boolean = false):Marker{
+                  draggable:Boolean = false,
+                  mipmapId:Int = R.mipmap.end):Marker{
         val options = MarkerOptions()
         options.position(position)
         options.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(App.instance.resources,
-                R.mipmap.end)))
+                mipmapId)))
         options.draggable(draggable)
         return  addMarker(options)
     }
-    fun addDraggableMarker(position:LatLng,markerDragEnd:(Marker?)->Unit):Map{
-        addMarker(position, true)
+
+    /**
+     * 添加一个可以拖动的标记
+     * @param position 添加标记的位置
+     * @param mipmapId 标记的图标
+     * @param markerDragEnd 标记拖动结束后的回调函数
+     */
+    fun addDraggableMarker(position:LatLng,
+                           mipmapId:Int = R.mipmap.end,
+                           markerDragEnd:(Marker?)->Unit):Map{
+        addMarker(position, true,mipmapId)
         setOnMarkerDragListener(markerDragEnd = markerDragEnd)
         return this
     }

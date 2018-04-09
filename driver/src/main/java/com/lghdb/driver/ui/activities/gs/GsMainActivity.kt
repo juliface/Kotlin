@@ -1,9 +1,9 @@
 package com.lghdb.driver.ui.activities.gs
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import com.amap.api.maps.MapView
 import com.amap.api.maps.model.LatLng
 import com.amap.api.maps.model.Marker
 import com.amap.api.services.core.AMapException
@@ -15,6 +15,7 @@ import com.lghdb.driver.extensions.removeButFirst
 import com.lghdb.driver.extensions.show
 import com.lghdb.driver.map.CommonRecyclerViewAdapter
 import com.lghdb.driver.map.Map
+import com.lghdb.driver.map.activitys.MapActivity
 import com.lghdb.driver.map.ext.nearSearch
 import com.lghdb.driver.map.ext.regeocodeSearched
 import com.lghdb.driver.map.ext.toLatLngPoint
@@ -27,23 +28,23 @@ import org.jetbrains.anko.toast
  * Created by lghdb on 2018/4/8.
  */
 
-class GsMainActivity: AppCompatActivity(){
+class GsMainActivity: MapActivity(){
 
     private var points:MutableList<AddressInfo> = mutableListOf()
     private var currentPoint:AddressInfo? = null
     private var marker:Marker? = null
-    private var map:Map? = null
     private var mylocation:LatLonPoint? = null
+
+    override val layoutId: Int
+        get() = R.layout.activity_gsmain
+    override val aMapView: MapView
+        get() = mapView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_gsmain)
-        actionBar?.hide()
-
         initView()
-        map = Map(mapView,savedInstanceState)
-        initMap(map!!)
+        initMap(map)
     }
 
     private fun initView(){
@@ -64,10 +65,7 @@ class GsMainActivity: AppCompatActivity(){
     }
 
     private fun initMap(map:Map){
-        //定位按钮
-        map.isMyLocationButtonEnabled = true
-        //显示定位蓝点
-        map.myLocationEnabled().zoomTo(15f) //设置显示级别
+        map.initDefaultConf()
         map.setOnMyLocationChangeListener {
             start.text = "起     ${it.latitude}, ${it.longitude}"
             marker = map.addMarker(LatLng(it.latitude, it.longitude))
@@ -116,25 +114,5 @@ class GsMainActivity: AppCompatActivity(){
                     }
                 }
         )
-    }
-
-
-
-    override fun onDestroy(){
-        super.onDestroy()
-        map?.onDestroy()
-    }
-    override fun onResume(){
-        super.onResume()
-        map?.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        map?.onPause()
-    }
-    override fun onSaveInstanceState(outbundle:Bundle){
-        super.onSaveInstanceState(outbundle)
-        map?.onSaveInstanceState(outbundle)
     }
 }

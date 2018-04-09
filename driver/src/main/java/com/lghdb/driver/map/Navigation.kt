@@ -16,6 +16,19 @@ import com.lghdb.driver.ui.listener.interfaces.DriverNaviListener
 class Navigation(val mapNaviView: AMapNaviView,
                  savedInstanceState: Bundle?){
 
+    /**
+     * 起点
+     */
+    private val startLatLngs:MutableList<NaviLatLng> = mutableListOf()
+    /**
+     * 终点
+     */
+    private val endLatLngs:MutableList<NaviLatLng> = mutableListOf()
+    /**
+     * 途径点
+     */
+    private val wayLatLngs:MutableList<NaviLatLng> = mutableListOf()
+
 
     val naviPaths:HashMap<Int, AMapNaviPath>
         get() = mapNavi.naviPaths
@@ -34,6 +47,22 @@ class Navigation(val mapNaviView: AMapNaviView,
         //导航语音
         voliceController = VoliceController.instance
         mapNavi.addAMapNaviListener(voliceController)
+    }
+
+
+    //****************************************************************************
+    //*************************起点，终点，途径点的操作******************************
+    fun addStart(point:NaviLatLng):Navigation{
+        startLatLngs.add(point)
+        return this
+    }
+    fun addEnd(point:NaviLatLng):Navigation{
+        endLatLngs.add(point)
+        return this
+    }
+    fun addWay(point:NaviLatLng):Navigation{
+        wayLatLngs.add(point)
+        return this
     }
 
     //**************************************************************
@@ -58,9 +87,9 @@ class Navigation(val mapNaviView: AMapNaviView,
      * @param failure 规划路线失败的回调函数,默认为不处理
      * @param success 规划路线成功的回调函数
      */
-    fun calculateDriveRoute(startPoints:MutableList<NaviLatLng>,
-                            endPoints:MutableList<NaviLatLng>,
-                            wayPoints:MutableList<NaviLatLng> = mutableListOf(),
+    fun calculateDriveRoute(startPoints:MutableList<NaviLatLng> = startLatLngs,
+                            endPoints:MutableList<NaviLatLng> = endLatLngs,
+                            wayPoints:MutableList<NaviLatLng> = wayLatLngs,
                             strategy:Int=mapNavi.strategyConvert(true,
                                     false, false, true, true),
                             failure: (Int?)->Unit = {},
@@ -83,8 +112,8 @@ class Navigation(val mapNaviView: AMapNaviView,
      * @param failure 路线规划失败的回调函数，默认不处理
      * @param success 路线规划成功的回调函数
      */
-    fun calculateWalkRoute(startPoint:NaviLatLng,
-                           endPoint:NaviLatLng,
+    fun calculateWalkRoute(startPoint:NaviLatLng = startLatLngs[0],
+                           endPoint:NaviLatLng = endLatLngs[0],
                            failure: (Int?)->Unit = {},
                            success:(IntArray?)->Unit){
 
@@ -106,8 +135,8 @@ class Navigation(val mapNaviView: AMapNaviView,
      * @param failure 路线规划失败的回调函数，默认不处理
      * @param success 路线规划成功的回调函数
      */
-    fun calculateRideRoute(startPoint:NaviLatLng,
-                           endPoint:NaviLatLng,
+    fun calculateRideRoute(startPoint:NaviLatLng = startLatLngs[0],
+                           endPoint:NaviLatLng = endLatLngs[0],
                            failure: (Int?)->Unit = {},
                            success:(IntArray?)->Unit){
 
