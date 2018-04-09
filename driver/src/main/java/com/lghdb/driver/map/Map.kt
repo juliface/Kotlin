@@ -1,20 +1,21 @@
 package com.lghdb.driver.map
 
+import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import com.amap.api.maps.AMap
 import com.amap.api.maps.CameraUpdate
+import com.amap.api.maps.CameraUpdateFactory
 import com.amap.api.maps.MapView
-import com.amap.api.maps.model.CameraPosition
-import com.amap.api.maps.model.Marker
-import com.amap.api.maps.model.MarkerOptions
-import com.amap.api.maps.model.MyLocationStyle
+import com.amap.api.maps.model.*
 import com.amap.api.navi.model.AMapNaviPath
 import com.amap.api.navi.view.RouteOverLay
 import com.lghdb.driver.R
 import com.lghdb.driver.extensions.ctx
+import com.lghdb.driver.ui.App
 
 /**
  * Created by lghdb on 18-4-7.
@@ -53,27 +54,44 @@ class Map(val mapView: MapView,val savedInstanceState: Bundle?){
      * 从location对象中获取经纬度信息，地址描述信息，建议拿到位置之后调用逆地理编码接口获取
      */
     fun setOnMyLocationChangeListener(loc: (Location)->Unit): Map {
-        map.setOnMyLocationChangeListener { loc }
+        map.setOnMyLocationChangeListener { loc(it) }
+        return this
+    }
+
+    fun myLocationEnabled():Map{
+        isMyLocationEnabled = true
+        myLocationStyle = MyLocationStyle()
+                .myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE)
+                .strokeColor(Color.TRANSPARENT)
+                .radiusFillColor(Color.TRANSPARENT)
         return this
     }
 
     //***********************************************************
     //××××××××××××××××××××移动地图相关×××××××××××××××××××××××××××××
     /**
-     * 地图移动的动画效果
+     * 按照传入的CameraUpdate参数改变地图状态。
      */
     fun moveCamera(cu:CameraUpdate): Map {
         map.moveCamera(cu)
         return this
     }
+
+    /**
+     * 设置缩放级别
+     */
+    fun zoomTo(tt:Float):Map{
+        moveCamera(CameraUpdateFactory.zoomTo(tt))
+        return this
+    }
     //地图移动的回调监听器
-    fun setOnCameraChangeListener(cameraChange:(CameraPosition?)->Unit = {},
-                                  cameraChangeFinish:(CameraPosition?)->Unit={}){
+    fun setOnCameraChangeListener(cameraChange:(CameraPosition)->Unit = {},
+                                  cameraChangeFinish:(CameraPosition)->Unit={}){
         map.setOnCameraChangeListener(object :AMap.OnCameraChangeListener{
-            override fun onCameraChange(position: CameraPosition?) {
+            override fun onCameraChange(position: CameraPosition) {
                 cameraChange(position)
             }
-            override fun onCameraChangeFinish(position: CameraPosition?) {
+            override fun onCameraChangeFinish(position: CameraPosition) {
                 cameraChangeFinish(position)
             }
         })
@@ -83,8 +101,21 @@ class Map(val mapView: MapView,val savedInstanceState: Bundle?){
 
     //***********************************************************
     //××××××××××××××××××××地图绘制点标记Marker××××××××××××××××××××××××
-    fun addMarker(marker:MarkerOptions):Map{
-        map.addMarker(marker)
+    fun addMarker(marker:MarkerOptions):Marker{
+        return map.addMarker(marker)
+    }
+    fun addMarker(position:LatLng,
+                  draggable:Boolean = false):Marker{
+        val options = MarkerOptions()
+        options.position(position)
+        options.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(App.instance.resources,
+                R.mipmap.end)))
+        options.draggable(draggable)
+        return  addMarker(options)
+    }
+    fun addDraggableMarker(position:LatLng,markerDragEnd:(Marker?)->Unit):Map{
+        addMarker(position, true)
+        setOnMarkerDragListener(markerDragEnd = markerDragEnd)
         return this
     }
     /**

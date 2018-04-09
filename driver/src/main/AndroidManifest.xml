@@ -49,33 +49,32 @@
 
         <service android:name="com.amap.api.location.APSService" />
 
-        <!--
-        <activity android:name="com.lghdb.driver.ui.activities.MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <activity android:name="com.lghdb.driver.ui.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        -->
+
 
         <activity android:name="com.lghdb.driver.ui.activities.DriverLineActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity android:name="com.lghdb.driver.ui.activities.AMapNaviActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <activity android:name="com.lghdb.driver.ui.activities.PoiSearchActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name="com.lghdb.driver.ui.activities.PicLocationActivity"
-            />
+        <activity android:name="com.lghdb.driver.ui.activities.PicLocationActivity" />
+
+        <!--gs module-->
+        <activity android:name="com.lghdb.driver.ui.activities.gs.GsMainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name="com.lghdb.driver.ui.activities.gs.GsNaviActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
     </application>
 
 </manifest>

@@ -1,5 +1,8 @@
 package com.lghdb.driver.map.ext
 
+import android.content.Context
+import com.amap.api.maps.model.LatLng
+import com.amap.api.navi.model.NaviLatLng
 import com.amap.api.services.core.LatLonPoint
 import com.amap.api.services.core.PoiItem
 import com.amap.api.services.geocoder.GeocodeResult
@@ -25,13 +28,14 @@ val type = "汽车服务|汽车销售|" +
  * @param coordinateType 坐标系类型
  * @param regeocode 搜索的到结果后的回调函数
  */
-fun LatLonPoint.regeocodeSearched(range:Float=200f,
+fun LatLonPoint.regeocodeSearched(ctx:Context = App.instance,
+                                  range:Float=200f,
                                   coordinateType:String=GeocodeSearch.AMAP,
-                                  regeocode:(RegeocodeResult?,Int)->Unit){
-    val search = GeocodeSearch(App.instance)
+                                  regeocode:(RegeocodeResult,Int)->Unit){
+    val search = GeocodeSearch(ctx)
     search.setOnGeocodeSearchListener(object : GeocodeSearch.OnGeocodeSearchListener{
-        override fun onGeocodeSearched(result: GeocodeResult?, recode: Int) {}
-        override fun onRegeocodeSearched(result: RegeocodeResult?, recode: Int) {
+        override fun onGeocodeSearched(result: GeocodeResult, recode: Int) {}
+        override fun onRegeocodeSearched(result: RegeocodeResult, recode: Int) {
             regeocode(result,recode)
         }
     })
@@ -50,7 +54,8 @@ fun LatLonPoint.regeocodeSearched(range:Float=200f,
  * @param range 搜索的范围
  * @param result 搜索的回调函数
  */
-fun LatLonPoint.nearSearch(pageSize:Int = 10,
+fun LatLonPoint.nearSearch(ctx:Context = App.instance,
+                           pageSize:Int = 10,
                            pageIndex:Int = 0,
                            keyWord:String = "",
                            stype:String = type,
@@ -58,10 +63,11 @@ fun LatLonPoint.nearSearch(pageSize:Int = 10,
                            range:Int = 1000,
                            result:(PoiResult,Int)->Unit){
 
-    val query = PoiSearch.Query("", type, "")
+    val query = PoiSearch.Query(keyWord, stype, city)
     query.pageSize = pageSize
     query.pageNum = pageIndex
     val search = PoiSearch(App.instance, query)
+    search.bound = PoiSearch.SearchBound(this, range)
     search.setOnPoiSearchListener(object : PoiSearch.OnPoiSearchListener{
         override fun onPoiItemSearched(p0: PoiItem, p1: Int) {}
         override fun onPoiSearched(p0: PoiResult, p1: Int) { result(p0,p1) }
@@ -69,3 +75,9 @@ fun LatLonPoint.nearSearch(pageSize:Int = 10,
     search.searchPOIAsyn()
 
 }
+
+
+fun LatLng.toLatLngPoint(): LatLonPoint = LatLonPoint(this.latitude, this.longitude)
+
+
+fun LatLonPoint.toNaviLatLng(): NaviLatLng = NaviLatLng(latitude, longitude)

@@ -2,7 +2,6 @@ package com.lghdb.kotlin.ui.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
 import com.lghdb.kotlin.ui.adapters.ForecastListAdapter

@@ -25,13 +25,15 @@ class Navigation(val mapNaviView: AMapNaviView,
 
     private val mapNavi:AMapNavi
     private var navListener:DriverNaviListener? = null
+    private val voliceController:VoliceController
 
     init {
         mapNaviView.onCreate(savedInstanceState)
         mapNavi = AMapNavi.getInstance(App.instance)
         mapNavi.addAMapNaviListener(NaviListener())
         //导航语音
-        mapNavi.addAMapNaviListener(VoliceController.instance)
+        voliceController = VoliceController.instance
+        mapNavi.addAMapNaviListener(voliceController)
     }
 
     //**************************************************************
@@ -150,6 +152,8 @@ class Navigation(val mapNaviView: AMapNaviView,
     fun onDestroy(){
         //在activity执行onDestroy时执行mapNaviView.onDestroy()，销毁导航对象
         mapNaviView.onDestroy()
+        mapNavi.stopNavi()
+        voliceController.destory()
     }
     fun onResume(){
         ////在activity执行onResume时执行mapNaviView.onResume ()，重新渲染导航地图
@@ -159,5 +163,7 @@ class Navigation(val mapNaviView: AMapNaviView,
     fun onPause() {
         //在activity执行onPause时执行mapNaviView.onPause ()，暂停导航
         mapNaviView.onPause()
+        voliceController.stopSpeaking()
+
     }
 }
