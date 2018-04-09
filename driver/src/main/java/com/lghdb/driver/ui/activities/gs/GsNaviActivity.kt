@@ -33,7 +33,8 @@ class GsNaviActivity: NavigationActivity(){
 
         val start = intent.getParcelableExtra<LatLonPoint>(START).toNaviLatLng()
         val end = intent.getParcelableExtra<LatLonPoint>(END).toNaviLatLng()
-        navigation.calculateDriveRoute(mutableListOf(start), mutableListOf(end),
+        navigation.addStart(start).addEnd(end)
+        navigation.calculateDriveRoute(
                 failure = {
                     onBackPressed()
                     toast("路线规划失败")

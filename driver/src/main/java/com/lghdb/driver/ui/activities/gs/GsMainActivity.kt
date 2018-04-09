@@ -2,7 +2,6 @@ package com.lghdb.driver.ui.activities.gs
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import com.amap.api.maps.MapView
 import com.amap.api.maps.model.LatLng
 import com.amap.api.maps.model.Marker
@@ -31,9 +30,10 @@ import org.jetbrains.anko.toast
 class GsMainActivity: MapActivity(){
 
     private var points:MutableList<AddressInfo> = mutableListOf()
-    private var currentPoint:AddressInfo? = null
-    private var marker:Marker? = null
-    private var mylocation:LatLonPoint? = null
+
+    private lateinit var marker:Marker
+    private lateinit var currentPoint:AddressInfo
+    private lateinit var mylocation:LatLonPoint
 
     override val layoutId: Int
         get() = R.layout.activity_gsmain
@@ -54,12 +54,12 @@ class GsMainActivity: MapActivity(){
                     itemView, t ->
                     itemView.locationName.text = t.title
                     itemView.locationDesc.text = t.description
-                    itemView.distance.text = t.distance.getDistance()
+                    itemView.distance.text = if (t.distance == 0) "标记位置" else "距标记${t.distance.getDistance()}"
                 },
                 itemClick = {
                     end.text = "到     ${it.point.latitude}, ${it.point.longitude}"
                     startActivity<GsNaviActivity>(
-                            GsNaviActivity.START to mylocation!!,
+                            GsNaviActivity.START to mylocation,
                             GsNaviActivity.END to it.point)
                 })
     }
@@ -71,29 +71,26 @@ class GsMainActivity: MapActivity(){
             marker = map.addMarker(LatLng(it.latitude, it.longitude))
             currentPoint = AddressInfo("[位置]","", LatLonPoint(it.latitude, it.longitude),0)
             mylocation = LatLonPoint(it.latitude, it.longitude)
-            points.add(currentPoint!!)
+            points.add(currentPoint)
         }
         map.setOnCameraChangeListener(
                 cameraChange = {
                     marker?.position = it?.target
                 },
                 cameraChangeFinish = {
-                    Log.v("info","现在位置：(${it.target.latitude}, ${it.target.longitude})")
                     currentPoint?.point = LatLonPoint(it.target.latitude, it.target.longitude)
                     currentPoint?.point?.regeocodeSearched { regeocodeResult, rCode ->
                         if (rCode == AMapException.CODE_AMAP_SUCCESS) {
                             currentPoint?.description = regeocodeResult.regeocodeAddress.formatAddress
                             points.removeAt(0)
-                            points.add(0, currentPoint!!)
+                            points.add(0, currentPoint)
                         }
                     }
                     //搜索周边的信息
-                    it?.target?.toLatLngPoint()?.nearSearch(ctx = this) {
+                    it?.target?.toLatLngPoint()?.nearSearch{
                         poiResult, rcode ->
                         when(rcode){
-                        //成功
                             AMapException.CODE_AMAP_SUCCESS -> {
-                                Log.v("info","搜索到数据!")
                                 points.removeButFirst()
                                 poiResult.pois.forEach{
                                     points.add(AddressInfo(it.title,it.snippet,it.latLonPoint,it.distance))
@@ -104,7 +101,6 @@ class GsMainActivity: MapActivity(){
                                     holderview.hide()
                                 }
                             }
-                        //失败
                             else -> {
                                 toast("搜索周边数据失败!")
                                 locations.hide()

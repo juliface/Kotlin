@@ -137,7 +137,7 @@ class Map(val mapView: MapView,val savedInstanceState: Bundle?){
                   mipmapId:Int = R.mipmap.end):Marker{
         val options = MarkerOptions()
         options.position(position)
-        options.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(App.instance.resources,
+        options.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(mapView.ctx.resources,
                 mipmapId)))
         options.draggable(draggable)
         return  addMarker(options)
@@ -205,7 +205,7 @@ class Map(val mapView: MapView,val savedInstanceState: Bundle?){
      * 绘制路线
      */
     fun drawRoute(path: AMapNaviPath){
-        RouteOverLay(map, path, mapView.context).apply {
+        RouteOverLay(map, path, mapView.ctx).apply {
             isTrafficLine = false
         }.addToMap()
     }

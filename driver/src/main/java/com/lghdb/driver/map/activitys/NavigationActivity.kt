@@ -42,6 +42,5 @@ abstract class NavigationActivity: Activity(){
     override fun onPause() {
         super.onPause()
         navigation?.onPause()
-
     }
 }
