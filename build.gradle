@@ -4,6 +4,7 @@ buildscript {
     ext.kotlin_version = '1.1.51'
     ext.support_version = '26.1.0'
     ext.anko_version = '0.10.0'
+    ext.mpchart_version = 'v3.0.3'
     repositories {
         google()
         jcenter()
@@ -21,6 +22,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 
